@@ -280,29 +280,54 @@ export function useGoldAnalysis(settings: Ref<AnalysisSettings>) {
     }
   }
 
-  const startSimulation = () => {
+  const startSimulation = async () => {
     isRunning.value = true
+    const goldAPI = useGoldPriceAPI()
+    
+    // Fetch initial real gold price
+    const initialPrice = await goldAPI.fetchCurrentGoldPrice()
+    if (initialPrice) {
+      settings.value.basePrice = initialPrice.price
+      currentPrice.value = initialPrice.price
+    }
+    
+    // Generate initial history with simulated data based on real price
     priceHistory.value = generatePriceData(100)
     currentPrice.value = priceHistory.value[priceHistory.value.length - 1]?.close ?? settings.value.basePrice
 
     if (intervalId) clearInterval(intervalId)
 
-    intervalId = setInterval(() => {
+    intervalId = setInterval(async () => {
       if (!isRunning.value) {
         if (intervalId) clearInterval(intervalId)
         return
       }
 
-      const lastPrice = priceHistory.value[priceHistory.value.length - 1]?.close ?? settings.value.basePrice
-      const volatilityRange = settings.value.basePrice * (settings.value.volatility / 100)
-      const change = (Math.random() - 0.5) * volatilityRange
+      // Fetch real gold price from API
+      const realPrice = await goldAPI.fetchCurrentGoldPrice()
+      
+      let lastPrice = priceHistory.value[priceHistory.value.length - 1]?.close ?? settings.value.basePrice
+      let newClose = lastPrice
+      
+      if (realPrice && realPrice.source !== 'Simulated') {
+        // Use real API price with small intra-update fluctuation
+        const fluctuation = realPrice.price * (Math.random() - 0.5) * 0.001 // ±0.1%
+        newClose = realPrice.price + fluctuation
+      } else {
+        // Fallback to simulation if API fails
+        const volatilityRange = settings.value.basePrice * (settings.value.volatility / 100)
+        const change = (Math.random() - 0.5) * volatilityRange
+        newClose = lastPrice + change
+      }
 
+      const volatilityRange = settings.value.basePrice * (settings.value.volatility / 100)
+      
       const newData: PriceData = {
         timestamp: Date.now(),
         open: lastPrice,
-        close: lastPrice + change,
-        high: Math.max(lastPrice, lastPrice + change) + Math.random() * (volatilityRange / 10),
-        low: Math.min(lastPrice, lastPrice + change) - Math.random() * (volatilityRange / 10),
+        close: newClose,
+        high: Math.max(lastPrice, newClose) + Math.random() * (volatilityRange / 10),
+        low: Math.min(lastPrice, newClose) - Math.random() * (volatilityRange / 10),
         volume: 1000000 + Math.random() * 500000,
       }
 
