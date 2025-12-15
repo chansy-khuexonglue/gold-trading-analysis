@@ -6,7 +6,7 @@
       <!-- Desktop Layout -->
       <div class="hidden md:flex items-center justify-between">
         <div class="flex items-center gap-4">
-          <UIcon name="i-lucide-trending-up" class="w-8 h-8 text-yellow-500" />
+          <img src="/logo.png" alt="Logo" class="size-12" />
           <div>
             <h1 class="text-2xl font-bold text-white">Gold Trading Analysis</h1>
             <p class="text-sm text-gray-400">

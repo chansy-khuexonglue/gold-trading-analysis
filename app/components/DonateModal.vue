@@ -187,9 +187,9 @@ const isOpen = computed({
 });
 
 // Placeholder addresses - Replace with your actual crypto addresses
-const btcAddress = ref("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa");
-const ethAddress = ref("0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb0");
-const usdtAddress = ref("TYASr5UV6HEcXatwdFQfmLVUqQQQMUxHLS");
+const btcAddress = ref("1MsJWxmvncNHwRQdw15TXBxJMyNP4QYk1Q");
+const ethAddress = ref("0x3a77b0935ef1a95f22233464fef48bfe00cfa645");
+const usdtAddress = ref("TBHzUPxySLm6DjnFMJrNNFdokzGw9z7LWx");
 
 const showCopySuccess = ref(false);
 

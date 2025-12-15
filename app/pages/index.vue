@@ -17,10 +17,11 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
         <UCard class="bg-gradient-to-br from-yellow-500 to-yellow-600">
           <div class="text-center">
-            <UIcon name="streamline:gold-solid" class="w-12 h-12 mb-2" />
-            <div class="text-sm font-medium text-yellow-100 mb-1">
-              Current Price
-            </div>
+            <UIcon
+              name="streamline:gold-solid"
+              class="w-12 h-12 mb-2 text-white"
+            />
+            <div class="text-sm font-medium white mb-1">Current Price</div>
             <div class="text-3xl font-bold text-white mb-1">
               ${{ currentPrice.toFixed(2) }}
             </div>
@@ -60,12 +61,20 @@
         >
           <div class="flex items-center justify-between">
             <div>
-              <div class="text-sm font-medium text-white/80 mb-1">
+              <div class="text-sm font-medium text-gray-400 mb-1">
                 Trading Signal
               </div>
-              <div class="text-2xl font-bold text-white mb-2">
+              <div
+                class="text-2xl font-bold mb-2"
+                :class="{
+                  'text-green-400': currentSignal?.type === 'BUY',
+                  'text-red-400': currentSignal?.type === 'SELL',
+                  'text-blue-400': currentSignal?.type === 'HOLD',
+                  'text-gray-500': !currentSignal?.type,
+                }"
+              >
                 {{ currentSignal?.type || "WAITING" }}
-                <span class="text-base ml-2">
+                <span class="text-base ml-2 text-gray-400">
                   (Strength: {{ currentSignal?.strength || 0 }}%)
                 </span>
               </div>
@@ -73,9 +82,17 @@
                 <div
                   v-for="(reason, idx) in currentSignal?.reason || []"
                   :key="idx"
-                  class="text-sm text-white/90 flex items-center gap-2"
+                  class="text-sm text-gray-300 flex items-center gap-2"
                 >
-                  <UIcon name="i-lucide-check-circle" class="w-4 h-4" />
+                  <UIcon
+                    name="i-lucide-check-circle"
+                    class="w-4 h-4"
+                    :class="{
+                      'text-green-400': currentSignal?.type === 'BUY',
+                      'text-red-400': currentSignal?.type === 'SELL',
+                      'text-blue-400': currentSignal?.type === 'HOLD',
+                    }"
+                  />
                   {{ reason }}
                 </div>
               </div>
