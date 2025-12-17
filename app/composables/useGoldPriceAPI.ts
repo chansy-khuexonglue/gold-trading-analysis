@@ -6,6 +6,15 @@ export interface GoldPriceResponse {
   source: string
 }
 
+interface ServerGoldPriceResponse {
+  success: boolean
+  price: number
+  timestamp: number
+  currency: string
+  source: string
+  error?: string
+}
+
 export function useGoldPriceAPI() {
   const isLoading = ref(false)
   const error = ref<string | null>(null)
@@ -19,78 +28,22 @@ export function useGoldPriceAPI() {
     error.value = null
 
     try {
-      // Try primary source: FreeGoldAPI for historical data (convert to current estimate)
-      try {
-        const response = await $fetch('https://www.freegoldapi.com/api/latest.json', {
-          method: 'GET',
-        })
+      // Call our server-side API endpoint (bypasses CORS)
+      const response = await $fetch<ServerGoldPriceResponse>('/api/gold-price', {
+        method: 'GET',
+      })
 
-        if (response && Array.isArray(response) && response.length > 0) {
-          const latest = response[0]
-          // Get the most recent price from the array
-          const price = parseFloat(latest.gold_usd || latest.gold_am_usd || latest.gold_pm_usd)
-          
-          if (!isNaN(price) && price > 0) {
-            lastPrice.value = price
-            return {
-              price,
-              timestamp: new Date(latest.date).getTime(),
-              currency: 'USD',
-              source: 'FreeGoldAPI',
-            }
-          }
+      if (response && response.success && response.price) {
+        lastPrice.value = response.price
+        return {
+          price: response.price,
+          timestamp: response.timestamp || Date.now(),
+          currency: response.currency || 'USD',
+          source: response.source || 'API',
         }
-      } catch (e) {
-        console.warn('FreeGoldAPI failed, trying fallback...', e)
       }
 
-      // Fallback: Use Metals-API free endpoint (no key for basic access)
-      try {
-        const response = await $fetch('https://api.metals.live/v1/spot/gold', {
-          method: 'GET',
-        })
-
-        if (response && typeof response === 'object' && 'price' in response) {
-          const price = parseFloat(response.price as string)
-          
-          if (!isNaN(price) && price > 0) {
-            lastPrice.value = price
-            return {
-              price,
-              timestamp: Date.now(),
-              currency: 'USD',
-              source: 'Metals.live',
-            }
-          }
-        }
-      } catch (e) {
-        console.warn('Metals.live failed, trying next fallback...', e)
-      }
-
-      // Fallback 2: Try alternative API endpoint
-      try {
-        const response = await $fetch('https://data-api.goldpricedata.com/v1/ticker', {
-          method: 'GET',
-        })
-
-        if (response && typeof response === 'object' && 'price' in response) {
-          const price = parseFloat(response.price as string)
-          
-          if (!isNaN(price) && price > 0) {
-            lastPrice.value = price
-            return {
-              price,
-              timestamp: Date.now(),
-              currency: 'USD',
-              source: 'GoldPriceData',
-            }
-          }
-        }
-      } catch (e) {
-        console.warn('GoldPriceData failed, using last known price or simulation...', e)
-      }
-
-      // If all APIs fail but we have a last known price, add small random fluctuation
+      // Fallback: Use last known price with fluctuation
       if (lastPrice.value) {
         const fluctuation = lastPrice.value * (Math.random() - 0.5) * 0.002 // ±0.2% fluctuation
         const price = lastPrice.value + fluctuation
@@ -103,8 +56,8 @@ export function useGoldPriceAPI() {
         }
       }
 
-      // Ultimate fallback: return simulated price based on realistic current market
-      const simulatedPrice = 2050 + (Math.random() - 0.5) * 20
+      // Ultimate fallback: return simulated price based on realistic current market (Dec 2024)
+      const simulatedPrice = 2650 + (Math.random() - 0.5) * 20
       lastPrice.value = simulatedPrice
       
       return {
@@ -114,11 +67,11 @@ export function useGoldPriceAPI() {
         source: 'Simulated',
       }
     } catch (e) {
-      error.value = 'Failed to fetch gold price from all sources'
+      error.value = 'Failed to fetch gold price from server'
       console.error('Gold price fetch error:', e)
       
       // Return simulated price on complete failure
-      const simulatedPrice = lastPrice.value || 2050
+      const simulatedPrice = lastPrice.value || 2650
       return {
         price: simulatedPrice + (Math.random() - 0.5) * 10,
         timestamp: Date.now(),

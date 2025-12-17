@@ -376,6 +376,11 @@
           </p>
         </div>
       </UCard>
+
+      <!-- Live Candlestick Chart -->
+      <!-- <div class="mt-8">
+        <LiveCandlestickChart />
+      </div> -->
     </div>
 
     <!-- Footer -->
