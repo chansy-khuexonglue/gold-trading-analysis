@@ -51,6 +51,16 @@
           >
             Stop
           </UButton>
+          <UButton
+            :icon="
+              colorMode.value === 'dark' ? 'i-lucide-sun' : 'i-lucide-moon'
+            "
+            color="primary"
+            variant="soft"
+            size="lg"
+            @click="toggleTheme"
+          >
+          </UButton>
         </div>
       </div>
 
@@ -124,6 +134,8 @@
 </template>
 
 <script setup lang="ts">
+const colorMode = useColorMode();
+
 defineProps<{
   isRunning: boolean;
 }>();
@@ -134,4 +146,8 @@ defineEmits<{
   start: [];
   stop: [];
 }>();
+
+function toggleTheme() {
+  colorMode.value = colorMode.value === "dark" ? "light" : "dark";
+}
 </script>
