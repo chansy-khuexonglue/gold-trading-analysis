@@ -1,6 +1,6 @@
 <template>
   <div
-    class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
+    class="min-h-screen bg-gray-50 dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-800 dark:to-gray-900"
   >
     <!-- Header -->
     <GoldAnalysisHeader
@@ -61,7 +61,7 @@
         >
           <div class="flex items-center justify-between">
             <div>
-              <div class="text-sm font-medium text-gray-400 mb-1">
+              <div class="text-sm font-medium dark:text-gray-400 mb-1">
                 Trading Signal
               </div>
               <div
@@ -74,7 +74,7 @@
                 }"
               >
                 {{ currentSignal?.type || "WAITING" }}
-                <span class="text-base ml-2 text-gray-400">
+                <span class="text-base ml-2  dark:text-gray-400">
                   (Strength: {{ currentSignal?.strength || 0 }}%)
                 </span>
               </div>
@@ -82,7 +82,7 @@
                 <div
                   v-for="(reason, idx) in currentSignal?.reason || []"
                   :key="idx"
-                  class="text-sm text-gray-300 flex items-center gap-2"
+                  class="text-sm  dark:text-gray-300 flex items-center gap-2"
                 >
                   <UIcon
                     name="i-lucide-check-circle"
@@ -390,6 +390,9 @@
 
     <!-- Donate Modal -->
     <DonateModal v-model="showDonateModal" />
+
+    <!-- AI Chat -->
+    <AiChat />
   </div>
 </template>
 

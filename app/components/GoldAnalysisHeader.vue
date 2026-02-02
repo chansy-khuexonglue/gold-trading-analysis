@@ -1,6 +1,6 @@
 <template>
   <div
-    class="border-b border-gray-700 bg-gray-900/50 backdrop-blur-lg sticky top-0 z-10"
+    class="border-b border-gray-300 dark:border-gray-700 bg-white/80 dark:bg-gray-900/50 backdrop-blur-lg sticky top-0 z-10"
   >
     <div class="container mx-auto px-4 py-3 md:py-4">
       <!-- Desktop Layout -->
@@ -8,8 +8,8 @@
         <div class="flex items-center gap-4">
           <img src="/logo.png" alt="Logo" class="size-12" />
           <div>
-            <h1 class="text-2xl font-bold text-white">Gold Trading Analysis</h1>
-            <p class="text-sm text-gray-400">
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Gold Trading Analysis</h1>
+            <p class="text-sm text-gray-600 dark:text-gray-400">
               Real-time technical analysis & trading signals
             </p>
           </div>
@@ -73,10 +73,10 @@
             class="w-6 h-6 text-yellow-500 flex-shrink-0"
           />
           <div class="min-w-0 flex-1">
-            <h1 class="text-lg font-bold text-white truncate">
+            <h1 class="text-lg font-bold text-gray-900 dark:text-white truncate">
               Gold Trading Analysis
             </h1>
-            <p class="text-xs text-gray-400 truncate">
+            <p class="text-xs text-gray-600 dark:text-gray-400 truncate">
               Real-time analysis & signals
             </p>
           </div>
@@ -101,6 +101,16 @@
               icon="i-lucide-settings"
               size="sm"
               square
+            />
+            <UButton
+              :icon="
+                colorMode.value === 'dark' ? 'i-lucide-sun' : 'i-lucide-moon'
+              "
+              color="primary"
+              variant="soft"
+              size="sm"
+              square
+              @click="toggleTheme"
             />
           </div>
 

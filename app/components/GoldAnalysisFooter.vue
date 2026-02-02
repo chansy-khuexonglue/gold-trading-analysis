@@ -1,6 +1,6 @@
 <template>
   <footer
-    class="mt-16 border-t border-gray-700 bg-gray-900/50 backdrop-blur-lg"
+    class="mt-16 border-t border-gray-300 dark:border-gray-700 bg-gray-100/80 dark:bg-gray-900/50 backdrop-blur-lg"
   >
     <div class="container mx-auto px-4 py-8">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -11,9 +11,9 @@
               name="i-lucide-trending-up"
               class="w-6 h-6 text-yellow-500"
             />
-            <span class="font-bold text-lg text-white">Gold Trader</span>
+            <span class="font-bold text-lg dark:text-white">Gold Trader</span>
           </div>
-          <p class="text-sm text-gray-400 mb-4">
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
             Professional gold trading analysis tool with real-time technical
             indicators and automated signals.
           </p>
@@ -23,7 +23,7 @@
               variant="ghost"
               icon="i-lucide-github"
               size="sm"
-              to="https://github.com"
+              to="https://github.com/chansy-khuexonglue/gold-trading-analysis"
               target="_blank"
             />
             <UButton
@@ -47,8 +47,8 @@
 
         <!-- Features -->
         <div>
-          <h4 class="font-semibold text-white mb-4">Features</h4>
-          <ul class="space-y-2 text-sm text-gray-400">
+          <h4 class="font-semibold dark:text-white mb-4 ">Features</h4>
+          <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
             <li class="flex items-center gap-2">
               <UIcon name="i-lucide-check" class="w-4 h-4 text-green-500" />
               <span>Real-time Analysis</span>
@@ -74,8 +74,8 @@
 
         <!-- Resources -->
         <div>
-          <h4 class="font-semibold text-white mb-4">Resources</h4>
-          <ul class="space-y-2 text-sm text-gray-400">
+          <h4 class="font-semibold dark:text-white mb-4">Resources</h4>
+          <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
             <li>
               <a
                 href="#"
@@ -127,8 +127,8 @@
 
         <!-- Tech Stack -->
         <div>
-          <h4 class="font-semibold text-white mb-4">Built With</h4>
-          <ul class="space-y-2 text-sm text-gray-400">
+          <h4 class="font-semibold dark:text-white mb-4">Built With</h4>
+          <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
             <li class="flex items-center gap-2">
               <UIcon name="i-lucide-code" class="w-4 h-4 text-blue-500" />
               <span>Nuxt 4</span>
@@ -157,17 +157,17 @@
       </div>
 
       <!-- Bottom Bar -->
-      <div class="mt-8 pt-8 border-t border-gray-700">
+      <div class="mt-8 pt-8 border-t border-gray-300 dark:border-gray-700">
         <div
           class="flex flex-col md:flex-row items-center justify-between gap-4"
         >
-          <div class="text-sm text-gray-400">
+          <div class="text-sm text-gray-600 dark:text-gray-400">
             <p>
               © {{ new Date().getFullYear() }} Gold Trading Analysis. All rights
               reserved.
             </p>
           </div>
-          <div class="flex items-center gap-4 text-sm text-gray-400">
+          <div class="flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
             <a href="#" class="hover:text-yellow-500 transition-colors"
               >Privacy Policy</a
             >
